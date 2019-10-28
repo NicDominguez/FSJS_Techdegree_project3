@@ -11,7 +11,7 @@ const activitySection = $('.activities')[0]
 // Creates element to store total activity cost
 let totalActivityCost = 0;
 const activityElement = document.createElement('div');
-activityElement.innerText = totalActivityCost;
+activityElement.innerText = "Total: $" + totalActivityCost;
 activitySection.append(activityElement)
 
 
@@ -59,18 +59,26 @@ designSELECT.addEventListener('change', () => {
 // Activity event
 activitySection.addEventListener('change', (e) => {
     let input = e.target
+    let inputArray = $.makeArray($(".activities input"))
     let dataCost = parseInt($(input).attr(`data-cost`).substr(1), 10)
-    console.log(input)
-    console.log(dataCost)
+    let dataDayAndTime = $(input).attr(`data-day-and-time`)
+    console.log(dataDayAndTime)
     if (input.checked) {
-        console.log("CHECKED")
         totalActivityCost += dataCost
-        console.log(totalActivityCost)
+        for (i = 0; i < inputArray.length; i++) {
+            if ($(inputArray[i]).attr(`data-day-and-time`) === dataDayAndTime && inputArray[i] !== input) {
+                $(inputArray[i]).attr(`disabled`, `true`)
+            }
+        }
     } else {
-        console.log("UNCHECKED")
         totalActivityCost -= dataCost
-        console.log(totalActivityCost)
+        for (i = 0; i < inputArray.length; i++) {
+            if ($(inputArray[i]).attr(`data-day-and-time`) === dataDayAndTime && inputArray[i] !== input) {
+                $(inputArray[i]).removeAttr(`disabled`)
+            }
+        }
     }
-
-    activityElement.innerText = "$" + totalActivityCost
+    activityElement.innerText = "Total: $" + totalActivityCost
 })
+
+
