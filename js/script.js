@@ -131,20 +131,67 @@ paymentSELECT.addEventListener('change', () => {
 
 const nameValidation = () => {
     if (/[A-Z][a-zA-Z][^#&<>\"~;$^%{}?]{1,30}$/g.test(userName.val())) {
-        console.log("true")
+        console.log("name true")
         return true
     } else {
-        console.log("false")
+        console.log("name false")
         return false
     }
 } 
 
-const emailValidation = () => { }
+const emailValidation = () => { 
+    if (/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(userEmail.val())) {
+        console.log("email true")
+        return true
+    } else {
+        console.log("email false")
+        return false
+    }
+}
+const activityValidation = () => {
+    if ($(activitySection).find("input")[0].checked) {
+        console.log("activity true")
+        return true
+    } else {
+        console.log("activity false")
+        return false
+    }
+}
 
-const activityValidation = () => { }
+const creditCardValidation = () => { 
+    if (/^(5$|5[1-5])/.test(ccNum.val())) {
+        console.log("cc true")
+        return true
+    } else {
+        console.log("cc false")
+        return false
+    }
+}
 
-const creditCardValidation = () => { }
+const zipCodeValidation = () => {
+    if (/^\d{5}$|^\d{5}-\d{4}$/.test(zipCode.val())) {
+        console.log("zip true")
+        return true
+    } else {
+        console.log("zip false")
+        return false
+    }
+}
+const cvvValidation = () => {
+    if (/^[0-9]{3,4}$/.test(cvvNum.val())) {
+        console.log("cvv true")
+        return true
+    } else {
+        console.log("cvv false")
+        return false
+    }
+}
 
-const zipCodeValidation = () => { }
-
-const cvvValidation = () => { }
+const allValidation = () => {
+    nameValidation()
+    emailValidation()
+    activityValidation()
+    creditCardValidation()
+    zipCodeValidation()
+    cvvValidation()
+}
