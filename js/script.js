@@ -6,7 +6,6 @@ const userName = $('#name')
 const userEmail = $('#mail')
 
 //Design and Color Section
-const nameINPUT = $('#name');
 const otherJobRoleINPUT = $('#other-title');
 const designSELECT = $('#design')[0];
 const selectThemeOPTION = $('#design option:first-child');
@@ -36,7 +35,7 @@ const cvvNum = $('#cvv')
 ////////////////////////////////////////////////////
 
 // Sets focus statte to first field 
-nameINPUT.focus();
+userName.focus();
 // Sets Other Job Role Input to hide if JS working
 otherJobRoleINPUT.hide();
 // Removes "Select Theme" option from design select menu
@@ -126,6 +125,10 @@ paymentSELECT.addEventListener('change', () => {
     }
 })
 
+////////////////////////////////////////////////////
+// CORE FUNCTIONS
+////////////////////////////////////////////////////
+
 
 // Payment Validation Functions
 
@@ -135,6 +138,7 @@ const nameValidation = () => {
         return true
     } else {
         console.log("name false")
+        insertErrorMessage(userName, "The name field cannot be blank")
         return false
     }
 } 
@@ -145,53 +149,73 @@ const emailValidation = () => {
         return true
     } else {
         console.log("email false")
+        insertErrorMessage(userEmail, "The email address must be properly formatted")
         return false
     }
 }
 const activityValidation = () => {
-    if ($(activitySection).find("input")[0].checked) {
+    let checkedActivityINPUTS = $(activitySection).find("input:checked")
+    if (checkedActivityINPUTS.length > 0) {
         console.log("activity true")
         return true
     } else {
         console.log("activity false")
+        insertErrorMessage(activitySection, "At least one activity must be selected")
         return false
     }
 }
 
-const creditCardValidation = () => { 
-    if (/^(5$|5[1-5])/.test(ccNum.val())) {
+const ccNumValidation = () => { 
+    if (/^[0-9]{13,16}/.test(ccNum.val())) {
         console.log("cc true")
         return true
     } else {
         console.log("cc false")
+        insertErrorMessage(ccNum, "The credit card number must be between 13 and 16 digits")
         return false
     }
 }
 
 const zipCodeValidation = () => {
-    if (/^\d{5}$|^\d{5}-\d{4}$/.test(zipCode.val())) {
+    if (/^[0-9]{5}/.test(zipCode.val())) {
         console.log("zip true")
         return true
     } else {
         console.log("zip false")
+        insertErrorMessage(zipCode, "The zip code must be 5 digits")
         return false
     }
 }
 const cvvValidation = () => {
-    if (/^[0-9]{3,4}$/.test(cvvNum.val())) {
+    if (/^[0-9]{3}$/.test(cvvNum.val())) {
         console.log("cvv true")
         return true
     } else {
         console.log("cvv false")
+        insertErrorMessage(cvvNum, "The CVV number must be 3 digits")
         return false
     }
 }
 
-const allValidation = () => {
+const basicInfoValidation = () => {
     nameValidation()
     emailValidation()
     activityValidation()
-    creditCardValidation()
+
+}
+
+const creditCardValidation = () => {
+    ccNumValidation()
     zipCodeValidation()
     cvvValidation()
 }
+
+////////////////////////////////////////////////////
+// SUPPORT FUNCTIONS
+////////////////////////////////////////////////////
+
+
+const insertErrorMessage = (element, message) => {
+    element.after($('<div class="error-message" style="background-color:red;text-align:center;padding:2% 5%;border-radius:20px;color:white;margin:0 auto;"></div>').text(message));
+}
+
