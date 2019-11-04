@@ -30,6 +30,8 @@ const ccNum = $('#cc-num')
 const zipCode = $('#zip')
 const cvvNum = $('#cvv')
 
+// Submit Button
+const registerBTN = $("button[type='submit']")
 ////////////////////////////////////////////////////
 // ON PAGE LOAD FUNCTION CALLS AND ADDED JS ELEMENTS
 ////////////////////////////////////////////////////
@@ -125,6 +127,37 @@ paymentSELECT.addEventListener('change', () => {
     }
 })
 
+creditCardDIV.keyup( (e) => {
+    let input = e.target
+    $(input).next(".error-message").remove()
+    if (input.id === ccNum.attr('id')) {
+        ccNumValidation()
+    } else if (input.id === zipCode.attr('id')) {
+        zipCodeValidation()
+    } else if (input.id === cvvNum.attr('id')) {
+        cvvValidation()
+    }
+})
+
+userName.keyup( (e) => {
+    let input = e.target
+    $(input).next(".error-message").remove()
+    nameValidation()
+})
+
+userEmail.keyup((e) => {
+    let input = e.target
+    $(input).next(".error-message").remove()
+    emailValidation()
+})
+
+registerBTN.click( (event) => {
+    event.preventDefault()
+    basicInfoValidation()
+    creditCardValidation()
+})
+
+
 ////////////////////////////////////////////////////
 // CORE FUNCTIONS
 ////////////////////////////////////////////////////
@@ -160,7 +193,7 @@ const activityValidation = () => {
         return true
     } else {
         console.log("activity false")
-        insertErrorMessage(activitySection, "At least one activity must be selected")
+        insertErrorMessage($(activitySection).find('div'), "At least one activity must be selected")
         return false
     }
 }
@@ -217,5 +250,6 @@ const creditCardValidation = () => {
 
 const insertErrorMessage = (element, message) => {
     element.after($('<div class="error-message" style="background-color:red;text-align:center;padding:2% 5%;border-radius:20px;color:white;margin:0 auto;"></div>').text(message));
+    element.css("border-color", "red")
 }
 
