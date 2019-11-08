@@ -43,9 +43,9 @@ userName.focus();
 // Sets Other Job Role Input to hide if JS working
 otherJobRoleINPUT.hide();
 // Sets desabled status to "Select Theme" option in design select
-$(designSelectFirstOPTION).attr('disabled', "")
+$(designSelectFirstOPTION).attr('hidden', "hidden")
 // Adds "Please select a T-shirt theme" option to color select menu
-colorSELECT.prepend($('<option selected disabled></option>').text("Please select a T-shirt theme"));
+colorSELECT.prepend($('<option selected hidden></option>').text("Please select a T-shirt theme"));
 // Hides all colors in the color select menu
 colorSELECT.find('[value]').hide()
 // Hides color select menu and label
@@ -73,7 +73,7 @@ userTitleSELECT.addEventListener('change', () => {
 
 
 // Sets correct color options depending on Theme selection
-designSELECT.addEventListener('change', () => {
+$(designSELECT).on('change click', () => {
     let jsPunOptions = colorSELECT.children().slice(1, 4)
     let jsHeartOptions = colorSELECT.children().slice(4, 7)
     if (designSELECT.value === "js puns") {
