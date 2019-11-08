@@ -9,6 +9,7 @@ const userTitleSELECT = $('#title')[0]
 //Design and Color Section
 const otherJobRoleINPUT = $('#other-title');
 const designSELECT = $('#design')[0];
+const designSelectFirstOPTION = $(designSELECT).find('option')[0]
 const selectThemeOPTION = $('#design option:first-child');
 const colorSELECT = $('#color');
 const activitySection = $('.activities')[0]
@@ -32,7 +33,7 @@ const zipCode = $('#zip')
 const cvvNum = $('#cvv')
 
 // Submit Button
-const registerBTN = $("button[type='submit']")
+const form = $('form')
 ////////////////////////////////////////////////////
 // ON PAGE LOAD FUNCTION CALLS AND ADDED JS ELEMENTS
 ////////////////////////////////////////////////////
@@ -41,8 +42,10 @@ const registerBTN = $("button[type='submit']")
 userName.focus();
 // Sets Other Job Role Input to hide if JS working
 otherJobRoleINPUT.hide();
+// Sets desabled status to "Select Theme" option in design select
+$(designSelectFirstOPTION).attr('disabled', "")
 // Adds "Please select a T-shirt theme" option to color select menu
-colorSELECT.prepend($('<option selected></option>').text("Please select a T-shirt theme"));
+colorSELECT.prepend($('<option selected disabled></option>').text("Please select a T-shirt theme"));
 // Hides all colors in the color select menu
 colorSELECT.find('[value]').hide()
 // Hides color select menu and label
@@ -160,11 +163,25 @@ userEmail.keyup((e) => {
     emailValidation()
 })
 
-registerBTN.click( (event) => {
-    event.preventDefault()
-    basicInfoValidation()
-    creditCardValidation()
+form.submit( (event) => {
+    if (basicInfoValidation()) {
+        console.log("basic infor valid")
+        if (paymentSELECT.value === "Credit Card") {
+            if (creditCardValidation()) {
+                console.log("credit card info valid")
+                console.log("form submitted")
+            } else {
+                console.log("credit card info invalid")
+                event.preventDefault()
+            }
+        }
+    } else {
+        console.log("basic info invalid")
+        event.preventDefault()
+    }
 })
+
+
 
 $('input').focus( (e) => {
     let input = e.target
@@ -182,19 +199,17 @@ $('input').focus( (e) => {
 
 const nameValidation = () => {
     if (/^\s*$/.test(userName.val())) {
-        console.log("true")
         insertErrorMessage(userName, "The name field must not be blank")
-        return true
-    } else {
-        console.log("false")
         return false
+    } else {
+        return true
     }
 } 
 
 const emailValidation = () => { 
     if (/^\s*$/.test(userEmail.val())) {
         insertErrorMessage(userEmail, "The email field must not be blank")
-        return true
+        return false
     } else {
         if (/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(userEmail.val())) {
             return true
@@ -242,16 +257,21 @@ const cvvValidation = () => {
 }
 
 const basicInfoValidation = () => {
-    nameValidation()
-    emailValidation()
-    activityValidation()
+    if (nameValidation() && emailValidation() && activityValidation()) {
+        return true
+    } else {
+        return false
+    }
+
 
 }
 
 const creditCardValidation = () => {
-    ccNumValidation()
-    zipCodeValidation()
-    cvvValidation()
+    if (ccNumValidation() && zipCodeValidation() && cvvValidation()) {
+        return true
+    } else {
+        return false
+    }
 }
 
 ////////////////////////////////////////////////////
